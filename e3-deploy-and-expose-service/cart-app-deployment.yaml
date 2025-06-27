@@ -1,7 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: front-end
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cart-deployment
+  namespace: front-end
   labels:
     app: cart-app
 spec:
@@ -30,6 +36,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: front-end
   name: cart-app
 spec:
   type: NodePort

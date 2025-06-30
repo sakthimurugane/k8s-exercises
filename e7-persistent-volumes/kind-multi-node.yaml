@@ -1,0 +1,10 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  extraMounts:
+  - hostPath: /Users/sakthimurugan/sakthi/k8s-exercises/
+    containerPath: /k8s-exercises
+  - hostPath: /Users/sakthimurugan/sakthi/k8s-exercises/e6-ha-control-plane
+    containerPath: /e6-folder
+    readOnly: true

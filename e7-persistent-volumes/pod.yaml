@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: api-logger
+  name: api-logger
+  namespace: esm
+spec:
+  volumes:
+    - name: log-volume
+      hostPath:
+        path: /k8s-exercises/e7-persistent-volumes
+  containers:
+    - image: nginx-logger:1.0.0
+      name: api-logger
+      volumeMounts:
+        - name: log-volume
+          mountPath: /mnt/logs
+      resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

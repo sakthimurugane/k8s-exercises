@@ -6,13 +6,6 @@ kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
   - role: control-plane
-    extraPortMappings:
-      - containerPort: 80
-        hostPort: 8080
-        protocol: TCP
-      - containerPort: 443
-        hostPort: 8443
-        protocol: TCP
 ```
 
 Then create the cluster:
@@ -25,8 +18,8 @@ kind create cluster --config kind-config.yaml
 You can install the official Gateway API CRDs from Kubernetes SIG:
 
 ```bash
-kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.0.1" | kubectl apply -f -"
-````
+kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v2.0.1" | kubectl apply -f -
+```
 
 ```bash
 customresourcedefinition.apiextensions.k8s.io/gatewayclasses.gateway.networking.k8s.io created
@@ -34,12 +27,12 @@ customresourcedefinition.apiextensions.k8s.io/gateways.gateway.networking.k8s.io
 customresourcedefinition.apiextensions.k8s.io/grpcroutes.gateway.networking.k8s.io created
 customresourcedefinition.apiextensions.k8s.io/httproutes.gateway.networking.k8s.io created
 customresourcedefinition.apiextensions.k8s.io/referencegrants.gateway.networking.k8s.io created
-````
+```
 
 Verify CRDs:
 ```bash
 kubectl get crds | grep gateway
-````
+```
 
 3. Install a Gateway API-compatible controller
 You need an actual implementation of the Gateway API. Popular choices:
@@ -49,7 +42,7 @@ Deploy the NGINX Gateway Fabric CRDs
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v2.0.1/deploy/crds.yaml
-````
+```
 Deploy NGINX Gateway Fabric
 
 ```bash
@@ -57,7 +50,8 @@ kubectl apply -f https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v2
 ```
 
 🟣 Option B: Istio
-If you're using Istio (e.g., with Istio Operator), enable the Gateway API support:
+If you're using Istio (e.g., with Istio Operator), enable the Gateway API support
+
 🟢 Option C: Envoy Gateway
 
 4. Verify the Deployment

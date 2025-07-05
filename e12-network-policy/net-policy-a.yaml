@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-pod-a
+  namespace: np-test
+spec:
+  podSelector:
+    matchLabels:
+      run: nginx
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          run: pod-a
+    ports:
+    - protocol: TCP
+      port: 80
+  policyTypes:
+  - Ingress

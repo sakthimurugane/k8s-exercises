@@ -1,10 +1,12 @@
-Create Cluster
-Option 1: LoadBalancer
+## Create Cluster
+### Option 1: LoadBalancer
 
 Create a kind cluster and run Cloud Provider KIND to enable the loadbalancer controller which ingress-nginx will use through the loadbalancer API.
-kind create cluster
 
-Option 2: extraPortMapping
+```bash
+kind create cluster
+```
+### Option 2: extraPortMapping
 
 Create a single node kind cluster with extraPortMappings to allow the local host to make requests to the Ingress controller over ports 80/443.
 
@@ -30,7 +32,7 @@ If you want to run with multiple nodes you must ensure that your ingress-control
 nodeSelector:
   kubernetes.io/hostname: "kind-control-plane"
 ```
-
+## Deploy Ingress Controller
 Ingress NGINX
 ```bash
 kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
@@ -44,5 +46,35 @@ kubectl wait --namespace ingress-nginx \
   --timeout=90s
 ```
 
+## Run Cloud provider KIND
+```bash
+sudo cloud-provider-kind
+```
+## Deploy the application with Ingress service
+```bash
+kind applt -f foo-bar-deployment.yaml
+```
+### Get the External IP address of Ingress controller
+```bash
+LB_IP=$(kubectl get svc/ingress-nginx-controller -n ingress-nginx  -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
+```
 
+# should output foo and bar on separate lines 
+```bash
+for _ in {1..10}; do
+  curl ${LB_IP}/foo
+done
+```
 
+console output:
+```bash
+sakthimurugan@MacBookPro e5-ingress-service % for _ in {1..10}; do
+  curl ${LB_IP}/bar    
+done
+bar-appbar-appbar-appbar-appbar-appbar-appbar-appbar-appbar-appbar-app%
+sakthimurugan@MacBookPro e5-ingress-service % for _ in {1..10}; do
+  curl ${LB_IP}/foo    
+done
+foo-appfoo-appfoo-appfoo-appfoo-appfoo-appfoo-appfoo-appfoo-appfoo-app% 
+sakthimurugan@MacBookPro e5-ingress-service % 
+```

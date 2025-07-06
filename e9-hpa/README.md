@@ -1,4 +1,6 @@
-K8s HPA - Horizontal Pod Autoscaler relies on the metrics from the metrics-server, we need to have metrics-server running in the cluster.
+# K8s HPA - Horizontal Pod Autoscaler 
+
+## HPA relies on the metrics from the metrics-server, we need to have metrics-server running in the cluster.
 
 How to check whether HPA can be used
 

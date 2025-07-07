@@ -11,12 +11,30 @@ br_netfilter
 EOF
 ```
 
+🌉 What is br_netfilter?
+
+    br_netfilter is a Linux kernel module.
+
+    It enables bridge network traffic to be visible to iptables rules.
+
+    This is critical for Kubernetes networking (especially when using kube-proxy in iptables mode and CNI plugins).
+
+Without br_netfilter, Kubernetes might not see traffic between pods on the same node (since Linux bridges bypass iptables by default).
+
 ```bash
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF
 ```
+
+🌉 What do these sysctl settings mean?
+
+    Parameter	Value	Purpose
+
+    net.bridge.bridge-nf-call-ip6tables	1	Ensures IPv6 traffic on Linux bridges is passed to ip6tables for filtering.
+
+    net.bridge.bridge-nf-call-iptables	1	Ensures IPv4 traffic on Linux bridges is passed to iptables for filtering.
 
 ```bash
 sudo sysctl --system
@@ -42,6 +60,26 @@ sudo apt-get install -y kubelet=1.33.0-1.1 kubeadm=1.33.0-1.1 kubectl=1.33.0-1.1
 sudo apt-mark hold kubelet kubeadm kubectl
 ```
 
+🗂 apt-mark
+
+This tool is used to change or view the “mark” (status) of packages for the package manager.
+
+Some common marks:
+
+    install: package is installed normally.
+
+    hold: prevents upgrades.
+
+    unhold: removes hold.
+
+🛑 What is “hold”?
+
+When a package is held, APT:
+
+    Will not upgrade it automatically.
+
+    Still allows you to manually install a different version if you choose.
+    
 ## Task 2:
 
 Initialize Control Plane Node (Master Node). Use the following options:
